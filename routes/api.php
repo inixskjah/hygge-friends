@@ -39,6 +39,6 @@ Route::prefix('friends')->name('friends.')->group(function() {
 
     });
 
-    //Route::get('/', '');
+    Route::get('/', 'FriendsController@index')->name('index');
 
 });
