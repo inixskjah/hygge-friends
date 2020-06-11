@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\FriendRequest;
 use App\Http\Requests\FriendRequestRequest;
+use Illuminate\Database\QueryException;
 
 class FriendRequestController extends Controller
 {
@@ -29,12 +30,20 @@ class FriendRequestController extends Controller
      */
     public function store(FriendRequestRequest $request)
     {
-        $friendRequest = FriendRequest::create([
-            'user_from_id' => auth()->user()->id,
-            'user_to_id'   => $request->user_id
-        ]);
+        try {
+            $friendRequest = FriendRequest::create([
+                'user_from_id' => auth()->user()->id,
+                'user_to_id' => $request->user_id
+            ]);
 
-        return response()->json($friendRequest);
+            return response()->json($friendRequest);
+        } catch (QueryException $e) {
+
+            return response()->json([
+                'message' => 'Вы уже отправляли запрос данному пользователю!'
+            ], 400);
+
+        }
     }
 
     /**

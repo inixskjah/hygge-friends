@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class FriendRequest extends Model
 {
+
+    protected $fillable = [
+        'user_from_id',
+        'user_to_id'
+    ];
+
     /**
      * Accept this friend request
      *

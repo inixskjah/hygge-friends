@@ -54,21 +54,21 @@ class User extends Authenticatable
     /**
      * Incoming friend requests
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function incomingRequests()
     {
-        return $this->belongsToMany(FriendRequest::class, 'friend_requests', 'user_from_id', 'user_to_id');
+        return $this->hasMany(FriendRequest::class,  'user_to_id', 'id');
     }
 
     /**
      * Outgoing friend requests
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function outgoingRequests()
     {
-        return $this->belongsToMany(FriendRequest::class, 'friend_requests', 'user_to_id', 'user_from_id');
+        return $this->hasMany(FriendRequest::class,  'user_from_id', 'id');
     }
 
 }

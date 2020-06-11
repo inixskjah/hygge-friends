@@ -25,20 +25,28 @@ Route::prefix('auth')->name('auth.')->group(function() {
     });
 });
 
-Route::prefix('friends')->name('friends.')->group(function() {
+Route::middleware('auth:api')->group(function() {
+    Route::prefix('friends')->name('friends.')->group(function() {
 
-    Route::prefix('requests')->name('requests.')->group(function() {
+        Route::prefix('requests')->name('requests.')->group(function() {
 
-        Route::get('/', 'FriendRequestController@index')->name('index');
+            Route::get('/', 'FriendRequestController@index')->name('index');
 
-        Route::post('/', 'FriendRequestController@store')->name('store');
+            Route::post('/', 'FriendRequestController@store')->name('store');
 
-        Route::delete('/{friendRequest}', 'FriendRequestController@destroy')->name('destroy');
+            Route::delete('/{friendRequest}', 'FriendRequestController@destroy')->name('destroy');
 
-        Route::post('/{friendRequest}/accept', 'FriendsController@store')->name('destroy');
+            Route::post('/{friendRequest}/accept', 'FriendsController@store')->name('destroy');
+
+        });
+
+        Route::get('/', 'FriendsController@index')->name('index');
 
     });
 
-    Route::get('/', 'FriendsController@index')->name('index');
+    Route::prefix('users')->name('users.')->group(function() {
 
+        Route::get('/', 'UsersController@index')->name('index');
+
+    });
 });
