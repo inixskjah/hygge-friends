@@ -22,9 +22,15 @@ class FriendRequest extends Model
     {
         DB::insert('INSERT INTO friends (`user1_id`, `user2_id`) VALUES (?, ?)', [
             $this->user_from_id,
-            $this->user_tom_id,
+            $this->user_to_id,
         ]);
 
+
         $this->delete();
+    }
+
+    public function user_from()
+    {
+        return $this->belongsTo(User::class, 'user_from_id');
     }
 }

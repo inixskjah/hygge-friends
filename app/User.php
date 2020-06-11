@@ -39,6 +39,9 @@ class User extends Authenticatable
     ];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getFriendsAttribute()
     {
         return $this

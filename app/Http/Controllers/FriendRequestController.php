@@ -30,6 +30,13 @@ class FriendRequestController extends Controller
      */
     public function store(FriendRequestRequest $request)
     {
+
+        if (auth()->user()->friends->where('id', $request->user_id)->count()) {
+            return response()->json([
+                'message' => 'Этот пользователь уже есть в списке Ваших друзей'
+            ]);
+        }
+
         try {
             $friendRequest = FriendRequest::create([
                 'user_from_id' => auth()->user()->id,
@@ -50,10 +57,21 @@ class FriendRequestController extends Controller
      * Delete friend request from DB (decline request)
      *
      * @param FriendRequest $friendRequest
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function destroy(FriendRequest $friendRequest)
     {
-        $friendRequest->delete();
+        if (auth()->user()->incomingRequests->where('id', $friendRequest->id)->count()) {
+            $friendRequest->delete();
+            return response()->json([
+                'message' => 'Заявка отклонена'
+            ]);
+        }
+        else {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        }
     }
 }
