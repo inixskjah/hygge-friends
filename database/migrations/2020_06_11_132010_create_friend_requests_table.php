@@ -14,11 +14,12 @@ class CreateFriendRequestsTable extends Migration
     public function up()
     {
         Schema::create('friend_requests', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_from_id')->nullable()->default(null);
             $table->unsignedBigInteger('user_to_id')  ->nullable()->default(null);
             $table->timestamps();
 
-            $table->primary([
+            $table->unique([
                 'user_from_id',
                 'user_to_id'
             ]);
