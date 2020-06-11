@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  title: hyggeFriendsApi
+  version: '1.0'
+  description: |-
+    Basic friends functionality
+    Supports: friends list, add to friends
+servers:
+  - url: 'http://localhost:8000'
+paths:
+  /auth/login:
+    post:
+      summary: login
+      operationId: post-auth-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_at:
+                    type: string
+      description: |-
+        Authenticate in application by email and password;
+        Returns app access token
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: email
+          description: User email
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: password
+          description: User password
+          required: true
+  /auth/signup:
+    post:
+      summary: signUp
+      operationId: post-auth-signup
+      responses:
+        '200':
+          description: OK
+      description: Sign up to application
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+          required: true
+          description: User name
+        - schema:
+            type: string
+          in: query
+          name: email
+          required: true
+          description: User email
+        - schema:
+            type: string
+          in: query
+          name: password
+          required: true
+          description: User password
+  /friends:
+    get:
+      summary: getFriendsList
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      operationId: get-friends
+      description: Get user friends list
+  /friends/requests:
+    get:
+      summary: getFriendRequestsList
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  incoming_requests:
+                    type: array
+                    items:
+                      type: object
+                  outgoing_requests:
+                    type: array
+                    items:
+                      type: object
+      operationId: get-friends-requests
+      description: Get user friend requests list
+    post:
+      summary: makeFriendRequest
+      operationId: post-friends-requests
+      responses:
+        '200':
+          description: OK
+      description: Make friend request to another user
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: user_id
+          description: "Other user's ID"
+          required: true
+  '/friends/requests/{request_id}':
+    parameters:
+      - schema:
+          type: string
+        name: request_id
+        in: path
+        required: true
+    delete:
+      summary: declineFriendRequest
+      operationId: delete-friends-requests-request_id
+      responses:
+        '200':
+          description: OK
+      description: Decline friend request
+  '/friends/requests/{request_id}/accept':
+    parameters:
+      - schema:
+          type: string
+        name: request_id
+        in: path
+        required: true
+    post:
+      summary: acceptFriendRequest
+      operationId: post-friends-requests-request_id-accept
+      responses:
+        '200':
+          description: OK
+      description: Accept friend request
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: accept
+          description: Confirm acception (true or false)
+          required: true
+  /users:
+    get:
+      summary: getUsersList
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      operationId: get-users
+      description: Get list of all users of application
+components:
+  schemas: {}
