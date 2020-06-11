@@ -26,7 +26,7 @@ Route::prefix('auth')->name('auth.')->group(function() {
 });
 
 Route::prefix('friends')->name('friends.')->group(function() {
-    
+
     Route::prefix('requests')->name('requests.')->group(function() {
 
         Route::get('/', 'FriendRequestController@index')->name('index');
@@ -35,7 +35,7 @@ Route::prefix('friends')->name('friends.')->group(function() {
 
         Route::delete('/{friendRequest}', 'FriendRequestController@destroy')->name('destroy');
 
-        Route::post('/{friendRequest}/accept', 'FriendRequestAcceptController@store')->name('destroy');
+        Route::post('/{friendRequest}/accept', 'FriendsController@store')->name('destroy');
 
     });
 

@@ -5,8 +5,21 @@ namespace App\Http\Controllers;
 use App\FriendRequest;
 use Illuminate\Http\Request;
 
-class FriendRequestAcceptController extends Controller
+class FriendsController extends Controller
 {
+
+    /**
+     * List of user's friends
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        return response()->json([
+            'friends' => auth()->user()->friends
+        ]);
+    }
+
     /**
      * Accept friend request;
      * Store friends relationship to DB
