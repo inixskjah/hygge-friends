@@ -9,6 +9,19 @@ class FriendRequestController extends Controller
 {
 
     /**
+     * Get list of friends requests
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        return response()->json([
+            'incoming_requests' => auth()->user()->incomingRequests,
+            'outgoing_requests' => auth()->user()->outgoingRequests,
+        ]);
+    }
+
+    /**
      * Store friend request to DB
      *
      * @param FriendRequestRequest $request

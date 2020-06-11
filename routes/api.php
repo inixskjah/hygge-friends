@@ -24,3 +24,21 @@ Route::prefix('auth')->name('auth.')->group(function() {
         return $request->user();
     });
 });
+
+Route::prefix('friends')->name('friends.')->group(function() {
+    
+    Route::prefix('requests')->name('requests.')->group(function() {
+
+        Route::get('/', 'FriendRequestController@index')->name('index');
+
+        Route::post('/', 'FriendRequestController@store')->name('store');
+
+        Route::delete('/{friendRequest}', 'FriendRequestController@destroy')->name('destroy');
+
+        Route::post('/{friendRequest}/accept', 'FriendRequestAcceptController@store')->name('destroy');
+
+    });
+
+    //Route::get('/', '');
+
+});
