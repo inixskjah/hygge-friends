@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -37,4 +37,38 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function getFriendsAttribute()
+    {
+        return $this
+            ->belongsToMany(User::class, 'friends', 'user1_id', 'user2_id')
+            ->get()
+            ->merge(
+                $this
+                    ->belongsToMany(User::class, 'friends', 'user2_id', 'user1_id')
+                    ->get()
+            );
+    }
+
+    /**
+     * Incoming friend requests
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function incomingRequests()
+    {
+        return $this->belongsToMany(FriendRequest::class, 'friend_requests', 'user_from_id', 'user_to_id');
+    }
+
+    /**
+     * Outgoing friend requests
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function outgoingRequests()
+    {
+        return $this->belongsToMany(FriendRequest::class, 'friend_requests', 'user_to_id', 'user_from_id');
+    }
+
 }
